@@ -3,11 +3,16 @@ import { createRequire } from "node:module";
 const require = createRequire(import.meta.url);
 import path from "path";
 import { execFileSync } from "child_process";
+import { readFileSync } from "fs";
 
 let resolved = process.env.SST_BIN_PATH;
 
 if (!resolved) {
-  const name = `sst-${process.platform}-${process.arch}`;
+  // Read package.json to get the package name
+  const pkgPath = require.resolve("../package.json");
+  const pkg = JSON.parse(readFileSync(pkgPath, "utf-8"));
+  const name = `${pkg.name}-${process.platform}-${process.arch}`;
+  
   const binary = process.platform === "win32" ? "sst.exe" : "sst";
 
   try {
