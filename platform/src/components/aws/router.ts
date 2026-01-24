@@ -2009,7 +2009,7 @@ async function routeSite(kvNamespace, metadata) {
 
   // Route to image optimizer
   if (metadata.image && baselessUri.startsWith(metadata.image.route)) {
-    setUrlOrigin(metadata.image.host);
+    setUrlOrigin(metadata.image.host, metadata.image.originAccessControlConfig ? { originAccessControlConfig: metadata.image.originAccessControlConfig } : undefined);
     return;
   }
 
@@ -2148,6 +2148,9 @@ function setUrlOrigin(urlHost, override) {
   if (override.timeouts) {
     origin.timeouts = override.timeouts;
   }
+  if (override.originAccessControlConfig) {
+    origin.originAccessControlConfig = override.originAccessControlConfig;
+  }
   cf.updateRequestOrigin(origin);
 }
 
@@ -2186,6 +2189,12 @@ export type KV_SITE_METADATA = {
   image?: {
     host: string;
     route: string;
+    originAccessControlConfig?: {
+      enabled: boolean;
+      signingBehavior: string;
+      signingProtocol: string;
+      originType: string;
+    };
   };
   servers?: [string, number, number][];
   origin?: {
