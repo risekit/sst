@@ -28,7 +28,7 @@ git tag v3.17.37
 git push origin v3.17.37
 
 # 2. Buildnpm login --scope=@risekit"
-rm -rf platform/dist/sst_* dist/ sdk/js/dist/ sdk/js/tmp/
+rm -rf platform/dist/ dist/ sdk/js/dist/ sdk/js/tmp/
 cd platform && bun run build && cd ..
 goreleaser build --clean --skip validate
 cd sdk/js && bun run build
