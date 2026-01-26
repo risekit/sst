@@ -18,10 +18,12 @@ cp ./functions/python-runtime/index.py ./dist/python-runtime/index.py
 mkdir -p ./dist/dockerfiles/
 cp ./functions/docker/python.Dockerfile ./dist/dockerfiles/python.Dockerfile
 
-cd ./support/bridge-task
-timestamp=$(date +%Y%m%d%H%M%S)
-docker buildx create --name multi --driver docker-container --use
-docker buildx build --platform linux/amd64,linux/arm64 -t ghcr.io/anomalyco/sst/bridge-task:$timestamp -t ghcr.io/anomalyco/sst/bridge-task:latest $([ "$DOCKER_PUSH" = "true" ] && echo "--push") .
+# Docker build commented out - not required for npm publishing
+# The bridge-task Docker image is only needed for AWS ECS Tasks deployment
+# cd ./support/bridge-task
+# timestamp=$(date +%Y%m%d%H%M%S)
+# docker buildx create --name multi --driver docker-container --use
+# docker buildx build --platform linux/amd64,linux/arm64 -t ghcr.io/anomalyco/sst/bridge-task:$timestamp -t ghcr.io/anomalyco/sst/bridge-task:latest $([ "$DOCKER_PUSH" = "true" ] && echo "--push") .
 
 
 cd $ORIGINAL_DIR
